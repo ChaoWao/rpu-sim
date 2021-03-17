@@ -28,7 +28,14 @@ void ThreadControl::hook() {
             front = (front + 1) % MAX_ENTRY;
             pop = false;
         }
-        if (!isEmpty() && rpu->tu->get_time() >= queue[front][0]) {
+        if (rpu->idex->opcode.read() == RVInstr::TKEND) {
+            front = (front - 1) % MAX_ENTRY;
+            queue[front][0] = 0;
+            // soft-real time thread
+            queue[front][1] = 3;
+            state.write(SwitchStatus::WBPC);
+        }
+        else if ((!isEmpty() && rpu->tu->get_time() >= queue[front][0])) {
             state.write(SwitchStatus::WBPC);
         }
         else {
