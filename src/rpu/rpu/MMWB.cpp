@@ -13,7 +13,7 @@ void MMWB::hook() {
 		switch (rpu->exmm->mem_ctrl.read()) {
 		case MemOp::SB:
 			m[addr % 4] = true;
-			rpu->dmem->write(addr - 0x10000000, rpu->exmm->r2.read(), m);
+            rpu->dmem->write(addr - rpu->dm_start, rpu->exmm->r2.read(), m);
 			break;
 		case MemOp::SH:
 			if ((addr >> 1) % 2 == 1) {
@@ -26,14 +26,14 @@ void MMWB::hook() {
 					m[1] = true;
 				}
 			}
-			rpu->dmem->write(addr - 0x10000000, rpu->exmm->r2.read(), m);
+            rpu->dmem->write(addr - rpu->dm_start, rpu->exmm->r2.read(), m);
 			break;
 		case MemOp::SW:
 			m[0] = true;
 			m[1] = true;
 			m[2] = true;
 			m[3] = true;
-			rpu->dmem->write(addr - 0x10000000, rpu->exmm->r2.read(), m);
+            rpu->dmem->write(addr - rpu->dm_start, rpu->exmm->r2.read(), m);
 			break;
 		default:
 			break;
