@@ -94,7 +94,7 @@ void RPU::tick() {
         pc = pcg->pg[tc->queue[tc->front][1]];
     }
     if (tc->state.read() == SwitchStatus::WBPC) {
-        pc->write(exmm->pc.read() != unsigned(-1) ? exmm->pc.read() : (idex->pc.read() != unsigned(-1) ? idex->pc.read() : ifid->pc.read()));
+        pc->write((idex->pc.read() != unsigned(-1) ? idex->pc.read() : (ifid->pc.read() != unsigned(-1) ? ifid->pc.read() : pc->read())));
     } else if (exmm->get_pc_src_ctl() == PcSrc::ALU) {
         pc->write(exmm->get_pc_des());
     } else {
